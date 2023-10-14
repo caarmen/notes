@@ -67,5 +67,6 @@ curl -X DELETE localhost:8000/notes/1
 ## Limitations
 * No user account management is implemented. Any client can modify and read all the notes.
 * The project isn't currently Dockerized.
+* No work has been done for deploying the servers in a production environment.
 
 
