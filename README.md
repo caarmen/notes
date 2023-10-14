@@ -18,9 +18,7 @@ The server provides the following REST routes:
 * Delete a note: `DELETE /notes/<note id>`
 
 ## Implementations
-Currently only a FastAPI and Flask implementations are done.
-
-I hope to be able to add Django REST Framework and maybe other implementations at some point.
+Currently implementations for FastAPI, Flask, and Django REST Framework are done.
 
 The goal is to be able to compare the different frameworks and learn about their trade-offs.
 
