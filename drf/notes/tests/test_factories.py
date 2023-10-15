@@ -1,9 +1,9 @@
 import datetime
 
 import pytest
+from tests.factories import NoteFactory
 
 from notes.models import Note
-from notes.tests.factories import NoteFactory
 
 
 @pytest.mark.django_db

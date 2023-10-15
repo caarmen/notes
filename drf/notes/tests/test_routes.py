@@ -2,10 +2,10 @@ import pytest
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.test import APIClient
+from tests.factories import NoteFactory
 
 from notes.models import Note
 from notes.serializers import NoteSerializer
-from notes.tests.factories import NoteFactory
 
 
 @pytest.mark.django_db
