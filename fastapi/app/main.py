@@ -1,14 +1,21 @@
 from typing import Annotated
 
 import uvicorn
+from fastapi.responses import JSONResponse
+from sqlalchemy.exc import InvalidRequestError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import crud
 from app.database.session import get_session
 from app.service.model import Note
-from fastapi import Body, Depends, FastAPI, status
+from fastapi import Body, Depends, FastAPI, Request, status
 
 app = FastAPI()
+
+
+@app.exception_handler(InvalidRequestError)
+async def invalid_request_error_handler(request: Request, exc: InvalidRequestError):
+    return JSONResponse(status_code=400, content={"message": str(exc)})
 
 
 @app.post("/notes/", status_code=status.HTTP_201_CREATED)
