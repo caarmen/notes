@@ -38,8 +38,8 @@ async def test_list_notes(
     assert response.status_code == status.HTTP_200_OK
     notes = TypeAdapter(List[ServiceNote]).validate_python(response.json())
     assert len(notes) == 2
-    assert notes[0].text == "hello"
-    assert notes[1].text == "there"
+    assert notes[0].text == "there"
+    assert notes[1].text == "hello"
 
 
 @pytest.mark.asyncio

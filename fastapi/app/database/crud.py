@@ -13,7 +13,14 @@ async def create_note(session: AsyncSession, text: str) -> model.Note:
 
 
 async def list_notes(session: AsyncSession) -> list[model.Note]:
-    return (await session.scalars(statement=select(model.Note))).all()
+    return (
+        await session.scalars(
+            statement=select(model.Note).order_by(
+                model.Note.created_at.desc(),
+                model.Note.id.desc(),
+            )
+        )
+    ).all()
 
 
 async def get_note(session: AsyncSession, id: int) -> model.Note:
