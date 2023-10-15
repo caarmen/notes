@@ -13,9 +13,9 @@ The data is stored in an SQLite database.
 The server provides the following REST routes:
 * Create a note: `POST /notes/`
 * List notes: `GET /notes/`
-* Get a note: `GET /notes/<note id>`
-* Update a note: `PUT /notes/<note id>` 
-* Delete a note: `DELETE /notes/<note id>`
+* Get a note: `GET /notes/<note id>/`
+* Update a note: `PUT /notes/<note id>/`
+* Delete a note: `DELETE /notes/<note id>/`
 
 ## Implementations
 Currently implementations are included for:
