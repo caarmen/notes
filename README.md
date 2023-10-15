@@ -50,17 +50,17 @@ curl localhost:8000/notes/
 
 *Read a note with id 1*:
 ```
-curl localhost:8000/notes/1
+curl localhost:8000/notes/1/
 ```
 
 *Modify the note with id 1*:
 ```
-curl -X PUT -H "content-type: application/json"  localhost:8000/notes/1 -d '{"text": "some note text"} '
+curl -X PUT -H "content-type: application/json"  localhost:8000/notes/1/ -d '{"text": "some note text"} '
 ```
 
 *Delete the note with id 1*:
 ```
-curl -X DELETE localhost:8000/notes/1
+curl -X DELETE localhost:8000/notes/1/
 ```
 
 ## Api documentation

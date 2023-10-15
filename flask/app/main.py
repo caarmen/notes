@@ -33,7 +33,7 @@ def create_app(config: AppConfig = AppConfig(db_connection_url=CONNECTION_URL)):
     note_item_view = NoteItemApi.as_view("note-detail")
     note_group_view = NoteGroupApi.as_view("note-group")
     app.add_url_rule("/notes/", view_func=note_group_view)
-    app.add_url_rule("/notes/<int:id>", view_func=note_item_view)
+    app.add_url_rule("/notes/<int:id>/", view_func=note_item_view)
     app.add_url_rule("/openapi.json", view_func=get_openapi)
     app.add_url_rule("/redoc", view_func=get_redoc)
     app.add_url_rule("/docs", view_func=get_swagger_ui)

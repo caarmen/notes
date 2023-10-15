@@ -59,7 +59,7 @@ async def test_get_note(
 ):
     note: DbNote = note_factory(text="buongiorno")
 
-    response: Response = await sync_to_async(lambda: client.get(f"/notes/{note.id}"))
+    response: Response = await sync_to_async(lambda: client.get(f"/notes/{note.id}/"))
     assert response.status_code == HTTPStatus.OK
 
     assert response.json["text"] == "buongiorno"
@@ -77,7 +77,7 @@ async def test_update_note(
     note2: DbNote = note_factory(text="hola")
 
     response: Response = await sync_to_async(
-        lambda: client.put(f"/notes/{note1.id}", json={"text": "hello2"})
+        lambda: client.put(f"/notes/{note1.id}/", json={"text": "hello2"})
     )
     assert response.status_code == HTTPStatus.OK
 
@@ -97,7 +97,9 @@ async def test_delete_note(
 ):
     note: DbNote = note_factory(text="ok")
 
-    response: Response = await sync_to_async(lambda: client.delete(f"/notes/{note.id}"))
+    response: Response = await sync_to_async(
+        lambda: client.delete(f"/notes/{note.id}/")
+    )
     assert response.status_code == HTTPStatus.NO_CONTENT
 
     db_notes: list[DbNote] = await crud.list_notes(session=mocked_async_session)
