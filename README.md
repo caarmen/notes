@@ -77,5 +77,6 @@ The api documentation is available for all implementations:
 * No user account management is implemented. Any client can modify and read all the notes.
 * The project isn't currently Dockerized.
 * No work has been done for deploying the servers in a production environment.
+* The project structures may not be scalable. The goal of this project is to discover and compare some REST frameworks at an introductory level, not necessarily to demonstrate an architecture of a complex application.
 
 
