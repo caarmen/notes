@@ -3,7 +3,7 @@ URL configuration for notes project.
 """
 from django.urls import include, path
 from drf_spectacular.views import (
-    SpectacularAPIView,
+    SpectacularJSONAPIView,
     SpectacularRedocView,
     SpectacularSwaggerView,
 )
@@ -17,15 +17,7 @@ router.register("notes", NoteViewSet)
 urlpatterns = [
     path("", include(router.urls)),
     # spectacular doc:
-    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
-    path(
-        "api/schema/swagger-ui/",
-        SpectacularSwaggerView.as_view(url_name="schema"),
-        name="swagger-ui",
-    ),
-    path(
-        "api/schema/redoc/",
-        SpectacularRedocView.as_view(url_name="schema"),
-        name="redoc",
-    ),
+    path("openapi.json", SpectacularJSONAPIView.as_view(), name="schema"),
+    path("docs/", SpectacularSwaggerView.as_view()),
+    path("redoc/", SpectacularRedocView.as_view()),
 ]
