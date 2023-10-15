@@ -1,11 +1,19 @@
 import dataclasses
-from http import HTTPStatus
 
-from app.database import crud
-from app.database.model import Note
-from app.database.session import CONNECTION_URL, get_session, init_db
-from app.service.model import NoteSchema, note_schema, notes_schema
-from flask import Flask, Response, request
+from marshmallow import ValidationError
+from sqlalchemy.exc import InvalidRequestError
+
+from app.database.session import CONNECTION_URL, init_db
+from app.errors import handle_invalid_request_error, handle_validation_error
+from app.views import (
+    NoteGroupApi,
+    NoteItemApi,
+    get_openapi,
+    get_redoc,
+    get_swagger_ui,
+    spec,
+)
+from flask import Flask
 
 
 @dataclasses.dataclass
@@ -19,37 +27,20 @@ def create_app(config: AppConfig = AppConfig(db_connection_url=CONNECTION_URL)):
     with app.app_context():
         init_db(url=config.db_connection_url)
 
-    @app.post("/notes/")
-    async def create_note():
-        async with get_session() as session:
-            note: Note = note_schema.load(request.json, session=session)
-            db_note = await crud.create_note(session, text=note.text)
-            return note_schema.dump(db_note), HTTPStatus.CREATED
+    app.register_error_handler(ValidationError, handle_validation_error)
+    app.register_error_handler(InvalidRequestError, handle_invalid_request_error)
 
-    @app.get("/notes/")
-    async def list_notes() -> list[NoteSchema]:
-        async with get_session() as session:
-            db_notes = await crud.list_notes(session)
-            return notes_schema.dump(db_notes)
+    note_item_view = NoteItemApi.as_view("note-detail")
+    note_group_view = NoteGroupApi.as_view("note-group")
+    app.add_url_rule("/notes/", view_func=note_group_view)
+    app.add_url_rule("/notes/<int:id>", view_func=note_item_view)
+    app.add_url_rule("/openapi.json", view_func=get_openapi)
+    app.add_url_rule("/redoc", view_func=get_redoc)
+    app.add_url_rule("/docs", view_func=get_swagger_ui)
 
-    @app.get("/notes/<note_id>")
-    async def get_note(note_id: int) -> NoteSchema:
-        async with get_session() as session:
-            db_note = await crud.get_note(session, id=note_id)
-            return note_schema.dump(db_note)
-
-    @app.put("/notes/<note_id>")
-    async def update_note(note_id: int):
-        async with get_session() as session:
-            note: Note = note_schema.load(request.json, session=session)
-            db_note = await crud.update_note(session, id=note_id, new_text=note.text)
-            return note_schema.dump(db_note)
-
-    @app.delete("/notes/<note_id>")
-    async def delete_note(note_id: int):
-        async with get_session() as session:
-            await crud.delete_note(session, id=note_id)
-            return Response(status=HTTPStatus.NO_CONTENT)
+    with app.test_request_context():
+        spec.path(view=note_group_view)
+        spec.path(view=note_item_view)
 
     return app
 

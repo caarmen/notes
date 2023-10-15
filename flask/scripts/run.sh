@@ -1,3 +1,3 @@
 alembic upgrade head
-flask --app app.main run
+flask --app app.main --debug run
 

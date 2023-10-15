@@ -46,10 +46,10 @@ async def test_list_notes(
     response: Response = await sync_to_async(lambda: client.get("/notes/"))
     assert response.status_code == HTTPStatus.OK
 
-    assert response.json[0]["text"] == "hello"
-    assert response.json[1]["text"] == "there"
+    assert response.json[0]["text"] == "there"
+    assert response.json[1]["text"] == "hello"
 
-    assert notes_schema.dump([note1, note2]) == response.json
+    assert notes_schema.dump([note2, note1]) == response.json
 
 
 @pytest.mark.asyncio
