@@ -27,7 +27,7 @@ The goal is to be able to compare the different frameworks and learn about their
 
 In each of the implementations, the server can be run as follows:
 
-Change directory into the implementation folder:
+Change directory into the implementation folder. For example, for fastapi:
 ```
 cd fastapi
 ```
@@ -63,6 +63,11 @@ curl -X PUT -H "content-type: application/json"  localhost:8000/notes/1 -d '{"te
 curl -X DELETE localhost:8000/notes/1
 ```
 
+## Api documentation
+The api documentation is available for all implementations:
+* Openapi json: http://0.0.0.0:8000/openapi.json
+* Swagger ui: http://0.0.0.0:8000/docs
+* Redoc: http://0.0.0.0:8000/redoc
 
 ## Limitations
 * No user account management is implemented. Any client can modify and read all the notes.
