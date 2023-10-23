@@ -1,5 +1,3 @@
-from typing import Annotated
-
 import uvicorn
 from fastapi.responses import JSONResponse
 from sqlalchemy.exc import InvalidRequestError
@@ -7,8 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import crud
 from app.database.session import get_session
-from app.service.model import Note
-from fastapi import Body, Depends, FastAPI, Request, status
+from app.service.model import Note, NoteInput
+from fastapi import Depends, FastAPI, Request, status
 
 app = FastAPI()
 
@@ -20,9 +18,9 @@ async def invalid_request_error_handler(request: Request, exc: InvalidRequestErr
 
 @app.post("/notes/", status_code=status.HTTP_201_CREATED)
 async def create_note(
-    text: Annotated[str, Body(embed=True)], session: AsyncSession = Depends(get_session)
+    note: NoteInput, session: AsyncSession = Depends(get_session)
 ) -> Note:
-    return await crud.create_note(session, text)
+    return await crud.create_note(session, note.text)
 
 
 @app.get("/notes/")
@@ -38,10 +36,10 @@ async def get_note(note_id: int, session: AsyncSession = Depends(get_session)) -
 @app.put("/notes/{note_id}/")
 async def update_note(
     note_id: int,
-    text: Annotated[str, Body(embed=True)],
+    note: NoteInput,
     session: AsyncSession = Depends(get_session),
 ) -> Note:
-    return await crud.update_note(session, id=note_id, new_text=text)
+    return await crud.update_note(session, id=note_id, new_text=note.text)
 
 
 @app.delete("/notes/{note_id}/", status_code=status.HTTP_204_NO_CONTENT)
