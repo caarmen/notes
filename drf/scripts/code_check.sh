@@ -5,5 +5,5 @@ do
   black $project || error=$?
   isort --profile black $project || error=$?
 done
-pytest notes/tests || error=$?
+pytest --junitxml="reports/junit.xml" notes/tests || error=$?
 exit $error

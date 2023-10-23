@@ -1,0 +1,94 @@
+name: Code check
+on:
+  pull_request:
+  push:
+      branches:
+        - main
+jobs:
+  Check-Flask:
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        working-directory: ./flask
+        run: |
+          python -m pip install -r requirements/dev.txt --upgrade pip
+      - name: Run codecheck
+        working-directory: ./flask
+        run: bash scripts/code_check.sh
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v4
+        if: always() # always run even if the previous step fails
+        with:
+          report_paths: 'flask/reports/junit.xml'
+          check_name: Flask tests
+      - name: Archive reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: flask-reports
+          path: flask/reports
+  Check-FastAPI:
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        working-directory: ./fastapi
+        run: |
+          python -m pip install -r requirements/dev.txt --upgrade pip
+      - name: Run codecheck
+        working-directory: ./fastapi
+        run: bash scripts/code_check.sh
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v4
+        if: always() # always run even if the previous step fails
+        with:
+          report_paths: 'fastapi/reports/junit.xml'
+          check_name: FastAPI tests
+      - name: Archive reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: fastapi-reports
+          path: fastapi/reports
+  Check-DRF:
+    runs-on: ubuntu-latest
+    permissions:
+      checks: write
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+      - name: Install dependencies
+        working-directory: ./drf
+        run: |
+          python -m pip install -r requirements/dev.txt --upgrade pip
+      - name: Run codecheck
+        working-directory: ./drf
+        run: bash scripts/code_check.sh
+      - name: Publish Test Report
+        uses: mikepenz/action-junit-report@v4
+        if: always() # always run even if the previous step fails
+        with:
+          report_paths: 'drf/reports/junit.xml'
+          check_name: DRF-tests
+      - name: Archive reports
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: drf-reports
+          path: drf/reports
