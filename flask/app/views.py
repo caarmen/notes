@@ -12,7 +12,7 @@ from app.service.model import NoteSchema, note_schema, notes_schema
 from flask import Response, render_template, request
 
 spec = APISpec(
-    title="Notes",
+    title="Flask Notes",
     version="1.0.0",
     openapi_version="3.0.2",
     plugins=[FlaskPlugin(), MarshmallowPlugin()],

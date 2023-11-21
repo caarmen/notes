@@ -56,7 +56,7 @@ REST_FRAMEWORK = {
 }
 
 SPECTACULAR_SETTINGS = {
-    "TITLE": "Notes API",
+    "TITLE": "Drf Notes Api",
     "DESCRIPTION": "Example notes application",
     "VERSION": "1.0.0",
     "SERVE_INCLUDE_SCHEMA": False,
