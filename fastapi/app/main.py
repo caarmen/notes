@@ -8,7 +8,7 @@ from app.database.session import get_session
 from app.service.model import Note, NoteInput
 from fastapi import Depends, FastAPI, Request, status
 
-app = FastAPI()
+app = FastAPI(title="FastApi Notes")
 
 
 @app.exception_handler(InvalidRequestError)
